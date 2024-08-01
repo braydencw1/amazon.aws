@@ -230,7 +230,7 @@ options:
     elements: str
   protected_from_scale_in:
     description:
-      - If V(true), instances will have scale-in protection enabled.
+      - If V(true) instances will have scale-in protection enabled.
     type: bool
     default: false
   tags:
