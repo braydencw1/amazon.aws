@@ -587,7 +587,8 @@
         protected_from_scale_in: true
       register: output
 
-    - ansible.builtin.assert:
+    - name: Assert ASG created
+      ansible.builtin.assert:
         that:
           - output.changed == true
       
@@ -596,10 +597,12 @@
         name: "{{ resource_prefix  }}-asg"
         protected_from_scale_in: false
       register: modified_output
-    - ansible.builtin.assert:
+    
+    - name: Assert ASG modification
+      ansible.builtin.assert:
         that:
           - protected_from_scale_in.changed == true
     - name: Destroy asg
       amazon.aws.autoscaling_group:
         name: "{{ resource_prefix }}-asg"
-        state: absent 
+        state: absent
