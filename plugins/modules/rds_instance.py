@@ -536,6 +536,14 @@ EXAMPLES = r"""
     state: present
     purge_iam_roles: true
 
+# Modify the DB instance type without waiting for a maintenance window 
+- name: Modify an RDS Instance
+  amazon.aws.rds_instance:
+    db_instance_identifier: mydbinstance123
+    instance_class: db.t2.small
+    apply_immediately: yes
+  register: rds_instance
+
 # Restore DB instance from snapshot
 - name: Create a snapshot and wait until completion
   amazon.aws.rds_instance_snapshot:
@@ -1141,6 +1149,14 @@ def get_options_with_changing_values(client, module: AnsibleAWSModule, parameter
                     parameters["Iops"] = new_iops
                     # must be always specified when changing iops
                     parameters["AllocatedStorage"] = new_allocated_storage
+
+    instance_performance_insights_kms_key_id = instance.get("PerformanceInsightsKMSKeyId")
+    if instance_performance_insights_kms_key_id == module.params.get(
+        "performance_insights_kms_key_id"
+    ) or instance_performance_insights_kms_key_id.split("/")[-1] == module.params.get(
+        "performance_insights_kms_key_id"
+    ):
+        parameters.pop("PerformanceInsightsKMSKeyId", None)
 
     if parameters.get("NewDBInstanceIdentifier") and instance.get("PendingModifiedValues", {}).get(
         "DBInstanceIdentifier"
