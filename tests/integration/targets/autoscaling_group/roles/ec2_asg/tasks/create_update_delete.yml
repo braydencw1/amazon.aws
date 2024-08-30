@@ -602,7 +602,3 @@
       ansible.builtin.assert:
         that:
           - protected_from_scale_in.changed == true
-    - name: Destroy asg
-      amazon.aws.autoscaling_group:
-        name: "{{ resource_prefix }}-asg"
-        state: absent
