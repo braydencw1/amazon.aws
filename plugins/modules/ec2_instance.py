@@ -225,7 +225,7 @@ options:
     description:
       - Controls whether source/destination checking is enabled on the interface.
     type: bool
-    version_added: 8.1.0
+    version_added: 8.2.0
   network_interfaces:
     description:
       - A list of dictionaries containing specifications for network interfaces.
@@ -233,7 +233,7 @@ options:
       - Mutually exclusive with O(network).
     type: list
     elements: dict
-    version_added: 8.1.0
+    version_added: 8.2.0
     suboptions:
       assign_public_ip:
         description:
@@ -298,7 +298,7 @@ options:
       - Mutually exclusive with O(security_groups).
     type: list
     elements: dict
-    version_added: 8.1.0
+    version_added: 8.2.0
     suboptions:
       id:
         description:
@@ -580,14 +580,14 @@ EXAMPLES = r"""
         ebs:
           snapshot_id: snap-1234567890
 
-- name: Create EC2 instance with termination protection turned on 
+- name: Create EC2 instance with termination protection turned on
   amazon.aws.ec2_instance:
     name: "my-ec2-instance"
     vpc_subnet_id: subnet-5ca1ab1e
     instance_type: t3.small
     image_id: ami-123456
-    termination_protection: yes
-    wait: yes
+    termination_protection: true
+    wait: true
 
 - name: start an instance with a cpu_options
   amazon.aws.ec2_instance:
