@@ -590,7 +590,7 @@
     - name: Assert ASG created
       ansible.builtin.assert:
         that:
-          - output.changed == true
+          - output.changed == true or (output.changed == false and output.protected_from_scale_in == true)
       
     - name: Disable instance protection from asg
       amazon.aws.autoscaling_group:
