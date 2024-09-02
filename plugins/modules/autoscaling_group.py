@@ -233,6 +233,7 @@ options:
       - If V(true), instances will have scale-in protection enabled.
     type: bool
     default: false
+    version_added: 8.2.0
   tags:
     description:
       - A list of tags to add to the Auto Scale Group.
@@ -1579,7 +1580,14 @@ def replace(connection):
     # This should get overwritten if the number of instances left is less than the batch size.
 
     as_group = describe_autoscaling_groups(connection, group_name)[0]
-    update_size(connection, as_group, max_size + batch_size, min_size + batch_size, desired_capacity + batch_size, protected_from_scale_in)
+    update_size(
+        connection,
+        as_group,
+        max_size + batch_size,
+        min_size + batch_size,
+        desired_capacity + batch_size,
+        protected_from_scale_in,
+    )
 
     if wait_for_instances:
         wait_for_new_inst(connection, group_name, wait_timeout, as_group["MinSize"] + batch_size, "viable_instances")
