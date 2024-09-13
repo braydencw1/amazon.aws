@@ -1371,6 +1371,7 @@ def create_autoscaling_group(connection):
             MinSize=min_size,
             MaxSize=max_size,
             DesiredCapacity=desired_capacity,
+            NewInstancesProtectedFromScale=protected_from_scale_in,
             HealthCheckGracePeriod=health_check_period,
             HealthCheckType=health_check_type,
             DefaultCooldown=default_cooldown,
