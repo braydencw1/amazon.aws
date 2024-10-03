@@ -876,6 +876,7 @@ def get_properties(autoscaling_group):
     properties["termination_policies"] = autoscaling_group.get("TerminationPolicies")
     properties["target_group_arns"] = autoscaling_group.get("TargetGroupARNs")
     properties["vpc_zone_identifier"] = autoscaling_group.get("VPCZoneIdentifier")
+    properties['protected_from_scale_in'] = autoscaling_group.get('NewInstancesProtectedFromScaleIn')
     raw_mixed_instance_object = autoscaling_group.get("MixedInstancesPolicy")
     if raw_mixed_instance_object:
         properties["mixed_instances_policy_full"] = camel_dict_to_snake_dict(raw_mixed_instance_object)
@@ -1207,7 +1208,8 @@ def create_autoscaling_group(connection):
             ag["TargetGroupARNs"] = target_group_arns
         if max_instance_lifetime:
             ag["MaxInstanceLifetime"] = max_instance_lifetime
-
+        if protected_from_scale_in:
+            ag['NewInstancesProtectedFromScaleIn']
         launch_object = get_launch_object(connection, ec2_connection)
         if "LaunchConfigurationName" in launch_object:
             ag["LaunchConfigurationName"] = launch_object["LaunchConfigurationName"]
@@ -1371,7 +1373,7 @@ def create_autoscaling_group(connection):
             MinSize=min_size,
             MaxSize=max_size,
             DesiredCapacity=desired_capacity,
-            NewInstancesProtectedFromScale=protected_from_scale_in,
+            NewInstancesProtectedFromScaleIn=protected_from_scale_in,
             HealthCheckGracePeriod=health_check_period,
             HealthCheckType=health_check_type,
             DefaultCooldown=default_cooldown,
